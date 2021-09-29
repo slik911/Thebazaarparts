@@ -1,0 +1,248 @@
+.contact-area {
+    padding-bottom: 50px;
+  }
+  
+  .contact-area #map {
+    width: 100%;
+    height: 400px;
+    margin-bottom: 50px;
+  }
+  
+  .contact-area #map .info-window {
+    padding: 15px;
+  }
+  
+  .contact-area #map .info-window h5 {
+    color: #3d1c65;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .contact-area #map .info-window p {
+    font-size: 16px;
+    color: #969696;
+    line-height: 25px;
+  }
+  
+  .contact-area .contact-box-tp h4 {
+    color: #222222;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding-bottom: 8px;
+    margin-bottom: 25px;
+  }
+  
+  .contact-area .contact-box {
+    margin-bottom: 40px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+  }
+  
+  .contact-area .contact-box .contact-icon i {
+    font-size: 26px;
+    color: #3d1c65;
+    width: 65px;
+    height: 65px;
+    text-align: center;
+    padding-top: 19px;
+    border: 1px solid #dddddd;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    border-radius: 50%;
+    margin-right: 20px;
+    margin-top: 5px;
+  }
+  
+  .contact-area .contact-box .contact-content h6 {
+    color: #444444;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .contact-area .contact-box .contact-content p {
+    font-size: 15px;
+    color: #969696;
+  }
+  
+  .contact-area .social-link ul li a i {
+    font-size: 15px;
+    color: #fff;
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    padding-top: 12px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    border-radius: 50%;
+  }
+  
+  .contact-area .social-link ul li a i:hover {
+    background: #3d1c65 !important;
+  }
+  
+  .contact-area .social-link ul li:nth-child(1) a i {
+    background: #3b5998;
+  }
+  
+  .contact-area .social-link ul li:nth-child(2) a i {
+    background: #1da1f2;
+  }
+  
+  .contact-area .social-link ul li:nth-child(3) a i {
+    background: #0077b5;
+  }
+  
+  .contact-area .social-link ul li:nth-child(4) a i {
+    background: #ff0000;
+  }
+  
+  .contact-area .social-link ul li:nth-child(5) a i {
+    background: #bd081c;
+  }
+  
+  .contact-area .contact-form h4 {
+    color: #222222;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding-bottom: 8px;
+    margin-bottom: 25px;
+  }
+  
+  .contact-area .contact-form form p input {
+    font-size: 15px;
+    width: 100%;
+    height: 45px;
+    border: 1px solid #dddddd;
+
+    padding-left: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .contact-area .contact-form form p select {
+    font-size: 15px;
+    width: 100%;
+    height: 45px;
+    border: 1px solid #dddddd;
+    padding-left: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .contact-area .contact-form form p select:focus {
+    border-color: #3d1c65;
+  }
+  
+  .contact-area .contact-form form p input:focus {
+    border-color: #3d1c65;
+  }
+  
+  .contact-area .contact-form form p select.placeholder {
+    
+    color: #969696;
+  }
+  
+  .contact-area .contact-form form p input.placeholder {
+    
+    color: #969696;
+  }
+  
+  .contact-area .contact-form form p input:-moz-placeholder {
+    
+    color: #969696;
+  }
+  
+  .contact-area .contact-form form p input::-moz-placeholder {
+    
+    color: #969696;
+  }
+  
+  .contact-area .contact-form form p input:-ms-input-placeholder {
+    
+    color: #969696;
+  }
+  
+  .contact-area .contact-form form p input::-webkit-input-placeholder {
+    
+    color: #969696;
+  }
+  
+  .contact-area .contact-form form p select:-moz-placeholder {
+    
+    color: #969696;
+  }
+  
+  
+  .contact-area .contact-form form p select::-moz-placeholder {
+    
+    color: #969696;
+  }
+  
+  .contact-area .contact-form form p select:-ms-input-placeholder {
+    
+    color: #969696;
+  }
+  
+  .contact-area .contact-form form p select::-webkit-input-placeholder {
+    
+    color: #969696;
+  }
+  
+  .contact-area .contact-form form p textarea {
+    font-size: 15px;
+    width: 100%;
+    height: 185px;
+    border: 1px solid #dddddd;
+    padding-left: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .contact-area .contact-form form p textarea:focus {
+    border-color: #3d1c65;
+  }
+  
+  .contact-area .contact-form form p textarea.placeholder {
+    
+    color: #969696;
+  }
+  
+  .contact-area .contact-form form p textarea:-moz-placeholder {
+    
+    color: #969696;
+  }
+  
+  .contact-area .contact-form form p textarea::-moz-placeholder {
+    
+    color: #969696;
+  }
+  
+  .contact-area .contact-form form p textarea:-ms-input-placeholder {
+    
+    color: #969696;
+  }
+  
+  .contact-area .contact-form form p textarea::-webkit-input-placeholder {
+    
+    color: #969696;
+  }
+  
+  .contact-area .contact-form form button {
+    font-size: 15px;
+    color: #fff;
+    background: #3d1c65;
+    padding: 10px 35px;
+    border: none;
+    font-weight: 600;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    -ms-border-radius: 25px;
+    border-radius: 25px;
+  }
+  
+  .contact-area .contact-form form button:hover {
+    background: #3d1c65;
+  }
+  
