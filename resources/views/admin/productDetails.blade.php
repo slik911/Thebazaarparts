@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    Dashboard - {{$product->slug}}
+    Dashboard - {{$product->name}}
 @endsection
 @section('header')
     {{$product->name}}
@@ -71,10 +71,10 @@
                                   <textarea class="form-control" readonly style="color:#111" name="" id="" rows="8">{{$product->description}}</textarea>
                                   </div>
                               </div>
-                             
-                             
+
+
                           </div>
-                          
+
                     </div>
                     <div class="col-md-3 order-0 mt-md-5 mt-0 mb-4">
                        <center>

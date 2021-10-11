@@ -9,7 +9,7 @@
   <div id="product_content" class="bg-white">
       <div class="container">
       <form action="{{route('featured_product.update')}}" id="form" method="post" enctype="multipart/form-data">
-              @csrf 
+              @csrf
               @method('PUT')
               <div class="row p-4">
                   <div class="col-md-7">
@@ -25,7 +25,7 @@
                               <select class="form-control pb-1" name="category" id="category">
                                 <option value="">Select category...</option>
                                 @foreach ($categories as $category)
-                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                <option value="{{$category->slug}}">{{$category->name}}</option>
                                 @endforeach
                               </select>
                             </div>
@@ -36,7 +36,7 @@
                                 <select class="form-control pb-1" name="subcategory" id="subcategory" required>
                                   <option value="">Select sub category...</option>
                                   @foreach ($subcategories as $subcategory)
-                                <option value="{{$subcategory->id}}">{{$subcategory->name}}</option>
+                                <option value="{{$subcategory->slug}}">{{$subcategory->name}}</option>
                                 @endforeach
 
                                 </select>
@@ -48,7 +48,7 @@
                                 <select class="form-control pb-1" name="brand" id="brand" required>
                                   <option value="">Select Brand...</option>
                                   @foreach ($brands as $brand)
-                                  <option value="{{$brand->id}}">{{$brand->name}}</option>
+                                  <option value="{{$brand->slug}}">{{$brand->name}}</option>
                                   @endforeach
                                 </select>
                               </div>
@@ -143,23 +143,23 @@
     <script>
          $(document).ready(function () {
                 $('#category').on('change', function(){
-                    var id = $('#category').val();
+                    var slug = $('#category').val();
                     $.ajax({
                         method: 'get',
                         url:"{{route('getSubCategoryBrand')}}",
-                        data:{id:id},
+                        data:{slug:slug},
                         success: function(data){
                             // console.log(data.sub);
 
 
                             $('#subcategory').html('<option value="">Select subcategory...</option>');
                                 $.each(data.sub, function(key, value){
-                                $('#subcategory').append('<option value = '+value.id+ '>'+value.name+'</option>');
+                                $('#subcategory').append('<option value = '+value.slug+ '>'+value.name+'</option>');
                             });
 
                             $('#brand').html('<option value="">Select brand...</option>');
                                 $.each(data.brand, function(key, value){
-                                $('#brand').append('<option value = '+value.id+ '>'+value.name+'</option>');
+                                $('#brand').append('<option value = '+value.slug+ '>'+value.name+'</option>');
                             });
                         }
                     });
@@ -170,13 +170,13 @@
             });
 
                 var id = $('#id').val();
-                 
+
                 $.ajax({
                     method: 'get',
                     url:"{{route('get.Featuredproduct')}}",
                     data:{id:id},
-                    success: function(data){    
-                        console.log(data.name);     
+                    success: function(data){
+                        console.log(data.name);
                         $('#name').val(data.name);
                         $('#category').val(data.category_id);
                         $('#subcategory').val(data.subcategory_id);
@@ -185,11 +185,11 @@
                         $('#country').val(data.country_id);
                         $('#description').val(data.description);
                         $('#price').val(data.price);
-                        $('#type').val(data.type);   
+                        $('#type').val(data.type);
                         $('#part_no').val(data.part_no);
-                        $('#blah').attr('src', '/images/products/'+data.image)         ;          
+                        $('#blah').attr('src', '/images/products/'+data.image)         ;
                     }
-                
+
             });
 
             $('#country').on('change', function(){
@@ -224,7 +224,7 @@
 
 
                 if(name == ''){
-                    toastr.error("Product name is required"); 
+                    toastr.error("Product name is required");
                 }
                 else if(category == ''){
                     toastr.error("Category is required");
@@ -250,10 +250,10 @@
                 else if(type == ''){
                     toastr.error("type is required");
                 }
-               
+
                 else{
                     if(image != ''){
-               
+
                         if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1){
                         toastr.error("file must be an image");
                         }
@@ -261,7 +261,7 @@
                             var file = $('#image')[0].files[0];
                             if(file.size > 2000000){
                                 toastr.error("Maximum file size is 2mb");
-                            
+
                             }
                             else{
                                 $('#form').submit();
@@ -272,14 +272,14 @@
                     else{
                         $('#form').submit();
                     }
-                    
+
                 }
-                    
+
             });
 
         });
 
-       
+
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -293,7 +293,7 @@
             }
         }
 
-       
-       
+
+
     </script>
 @endsection

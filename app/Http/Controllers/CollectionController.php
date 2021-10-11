@@ -84,7 +84,7 @@ class CollectionController extends Controller
      public function deleteCategory(Request $request){
          $cat = Category::find($request->id)->first();
          File::delete('images/category/'.$cat->image);
-         Category::find($request->id)->delete();
+         Category::find($request->id)->update(['deleted'=> true]);
          $request->session()->flash('success', 'Category deleted successfully');
              return redirect()->back();
      }
@@ -92,7 +92,10 @@ class CollectionController extends Controller
      public function subcategory(){
          if(Auth::check()){
              $categories = Category::where('deleted', false)->latest()->cursor();
-             $subcategories = SubCategory::with('category')->latest()->cursor();
+             $subcategories = DB::table('subcategories')
+                                ->select('subcategories.*', 'categories.name as category_name')
+                                ->leftJoin('categories', 'categories.slug', 'subcategories.category_id')
+                                ->where('subcategories.deleted', false)->latest()->cursor();
              $new = new NotificationModel;
             $data = $new->notifiable();
              return view('admin.subcategories', compact('categories', 'subcategories', 'data'));
@@ -151,7 +154,7 @@ class CollectionController extends Controller
 
      public function deletesubCategory(Request $request){
 
-         SubCategory::find($request->id)->delete();
+         SubCategory::where('id', $request->id)->update(['deleted'=> true]);
          $request->session()->flash('success', 'Subcategory deleted successfully');
              return back();
      }
@@ -160,7 +163,10 @@ class CollectionController extends Controller
      public function brand(){
          if(Auth::check()){
              $categories = Category::where('deleted', false)->cursor();
-             $brands = Brand::with('category')->latest()->cursor();
+             $brands = DB::table('brands')
+             ->select('brands.*', 'categories.name as category_name')
+             ->leftJoin('categories', 'categories.slug', 'brands.category_id')
+             ->where('brands.deleted', false)->latest()->cursor();
              $new = new NotificationModel;
         $data = $new->notifiable();
 
@@ -221,7 +227,7 @@ class CollectionController extends Controller
 
      public function deletebrand(Request $request){
 
-         Brand::find($request->id)->delete();
+         Brand::where('id', $request->id)->update(['deleted'=>true]);
          $request->session()->flash('success', 'Brand deleted successfully');
              return back();
      }

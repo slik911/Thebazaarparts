@@ -22,9 +22,9 @@ class HotlistProductController extends Controller
 {
     public function manage(){
         $products = DB::table('hotlist_products')->where('user_id', auth::user()->id)->latest()->cursor();
-        $products_id = DB::table('products')->where('status', true)->where('rejected', false)->where('expired', false)->where('deleted', false)->pluck('product_id');        
+        $products_id = DB::table('products')->where('status', true)->where('rejected', false)->where('expired', false)->where('deleted', false)->pluck('product_id');
         $new = new NotificationModel;
-        $slot_data = $new->productNotification();      
+        $slot_data = $new->productNotification();
         return view('seller.manageHotlistProducts', compact('products', 'products_id', 'slot_data'));
     }
 
@@ -33,16 +33,16 @@ class HotlistProductController extends Controller
     public function getProductDetails($slug){
         $product = DB::table('hotlist_products')
                    ->select('hotlist_products.*', 'categories.name as category_name', 'subcategories.name as subcategory_name', 'brands.name as brand_name', 'states.name as state_name', 'countries.name as country_name')
-                   ->leftjoin('categories', 'categories.id', '=', 'hotlist_products.category_id')
-                   ->leftjoin('subcategories', 'subcategories.id', '=', 'hotlist_products.subcategory_id')
-                   ->leftjoin('brands', 'brands.id', '=', 'hotlist_products.brand')
+                   ->leftjoin('categories', 'categories.slug', '=', 'hotlist_products.category_id')
+                   ->leftjoin('subcategories', 'subcategories.slug', '=', 'hotlist_products.subcategory_id')
+                   ->leftjoin('brands', 'brands.slug', '=', 'hotlist_products.brand')
                    ->leftjoin('countries', 'countries.id', '=', 'hotlist_products.country_id')
                    ->leftJoin('states', 'states.id', '=', 'hotlist_products.state_id')
                    ->where('hotlist_products.slug', '=', $slug)->first();
 
                    $new = new NotificationModel;
                    $data = $new->notifiable();
-                   $slot_data = $new->productNotification();  
+                   $slot_data = $new->productNotification();
                    return view('admin.productDetails', compact('product', 'data', 'slot_data'));
     }
 
@@ -51,11 +51,11 @@ class HotlistProductController extends Controller
         // dd($product);
         $countries = Country::cursor();
         $categories =  Category::where('deleted', false)->cursor();
-        $subcategories = Subcategory::where('deleted', false)->cursor();
+        $subcategories = Subcategory::where('category_id', $product->category_id)->where('deleted', false)->cursor();
         $states = State::cursor();
-        $brands = Brand::where('deleted', false)->cursor();
+        $brands = Brand::where('category_id', $product->category_id)->where('deleted', false)->cursor();
         $new = new NotificationModel;
-        $slot_data = $new->productNotification();  
+        $slot_data = $new->productNotification();
         return view('seller.editHotlistProduct', compact('product', 'countries',  'categories', 'brands', 'states', 'subcategories', 'slot_data'));
     }
 
@@ -95,7 +95,7 @@ class HotlistProductController extends Controller
                 $filename = time() . '.' . $image->getClientOriginalExtension();
                 $location = public_path('images/products/'. $filename);
                 Image::make($image)->save($location);
-                DB::table('hotlist_products')->where('id', $request->id)->update(["image"=>$filename]);    
+                DB::table('hotlist_products')->where('id', $request->id)->update(["image"=>$filename]);
             }
 
         $request->session()->flash('success', 'Product updated successfully.');
@@ -112,7 +112,7 @@ class HotlistProductController extends Controller
                     $status = DB::table('company_profiles')->where('user_id', auth::user()->id)->value('verified');
                     if($status == true){
                         if($count->total_slot_remaining > 0){
-                           
+
                             $product = DB::table('products')->where('product_id', $request->product_id)->first();
                             if(DB::table('hotlist_products')->where('product_id', $request->product_id)->exists()){
                                 $request->session()->flash('error', 'Products has already been uploaded, please check and try again');
@@ -124,7 +124,7 @@ class HotlistProductController extends Controller
                                 $new->user_id = Auth::user()->id;
                                 $new->product_id = $product->product_id;
                                 $new->name = $product->name;
-                                $new->price = $product->price; 
+                                $new->price = $product->price;
 
 
                                 $oldpath = 'images/products/'.$product->image;
@@ -133,7 +133,7 @@ class HotlistProductController extends Controller
                                 $newPathWithName = 'images/products/'.$newName;
                                 File::copy($oldpath, $newPathWithName);
 
-                                $new->image = $newName; 
+                                $new->image = $newName;
                                 $new->category_id = $product->category_id;
                                 $new->subcategory_id = $product->subcategory_id;
                                 $new->brand = $product->brand;
@@ -156,7 +156,7 @@ class HotlistProductController extends Controller
                                         $newCount->completed = true;
                                     }
                                     $newCount->save();
-    
+
                                     $request->session()->flash('success', 'Product added to Hotlist');
                                     return redirect()->route('product.manage');
                                 }
@@ -164,11 +164,11 @@ class HotlistProductController extends Controller
                                     $request->session()->flash('error', 'Sorry an error just occurred, please try again later.');
                                     return redirect()->back();
                                 }
-                            }    
+                            }
                         }
                         else{
                             $request->session()->flash('error', 'You have exhausted your product slot.');
-                            return redirect()->back();  
+                            return redirect()->back();
                         }
                     }
                     else{
@@ -180,7 +180,7 @@ class HotlistProductController extends Controller
             $request->session()->flash('error', 'Please kindly purchase a featured slot before uploading a new product');
             return redirect()->back();
         }
-        
+
     }
 
 
@@ -188,14 +188,14 @@ class HotlistProductController extends Controller
         $product_hotlist = DB::table('hotlist_products')->where('product_id', $request->id)->first();
 
         File::delete('images/products/'.$product_hotlist->image);
-        
+
 
         DB::table('product_slot_managers')->where('slot_id', $product_hotlist->slot_id)->increment('total_slot_remaining', 1);
         DB::table('product_slot_managers')->where('slot_id', $product_hotlist->slot_id)->update(['completed'=> false]);
         DB::table('hotlist_products')->where('product_id', $request->id)->delete();
         $request->session()->flash('success', 'Product deleted successfully');
         return redirect()->back();
-        
+
     }
 
     public function updateAvailability(Request $request){
@@ -204,7 +204,7 @@ class HotlistProductController extends Controller
         $product->save();
 
         if($product->availability == true){
-            $request->session()->flash('success', 'Product availability changed to In stock');   
+            $request->session()->flash('success', 'Product availability changed to In stock');
         }
         else{
             $request->session()->flash('success', 'Product availability changed to out of stock');
@@ -238,8 +238,8 @@ class HotlistProductController extends Controller
                            ->select('hotlist_products.product_id as product_id', 'hotlist_products.slug as slug', 'users.email as email')
                            ->leftJoin('users', 'users.id', '=', 'hotlist_products.user_id')
                            ->where('hotlist_products.id', $request->id)->first();
-        
-        
+
+
         $details = [
             'title'=>'Product Approval Notification',
             'url' => route('product.viewhotlistDetails', ['slug'=>$product_details->slug]),

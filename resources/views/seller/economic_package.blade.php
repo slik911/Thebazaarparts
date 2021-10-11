@@ -3,7 +3,7 @@
 Economic Package
 @endsection
 @section('jsfiles')
-<script src="https://js.paystack.co/v1/inline.js"></script> 
+<script src="https://js.paystack.co/v1/inline.js"></script>
 @endsection
 @section('header')
    Economic Package
@@ -78,7 +78,7 @@ Economic Package
 									</ul>
 								</div>
 								<div class="card-footer">
-                                 
+
 									<button type="submit" class="btn btn-light btn-block btn-sm paystack" data-id="30000" data-package="Featured" id="" onclick="return confirm('Do you want to continue ?')"> Purchase Plan </button>
 								</div>
 							</div>
@@ -109,7 +109,7 @@ Economic Package
 								</div>
 								<div class="card-footer">
 									<button type="submit" class="btn btn-secondary btn-block btn-sm paystack" data-id="15000" data-package="Hotlist" id="" onclick="return confirm('Do you want to continue ?')"> Purchase Plan </button>
-                                   
+
 								</div>
 							</div>
 						</div>
@@ -145,7 +145,7 @@ Economic Package
                 key: 'pk_test_fd9b91bf407680d2d6a0ac9841aa7a0b8beb90bc', // Replace with your public key
                 email: document.getElementById("email").value,
                 amount: data[0] * 100,
-                ref: ''+Math.floor((Math.random() * 1000000000) + 1), 
+                ref: ''+Math.floor((Math.random() * 1000000000) + 1),
                 metadata: {
                     custom_fields:[
                         {
@@ -153,7 +153,7 @@ Economic Package
                             variable_name: "Customer_name",
                             value: document.getElementById("name").value
                         },
-                        
+
 						{
                             display_name: "Package Description",
                             variable_name: "package_description",
@@ -168,7 +168,7 @@ Economic Package
                     ]
                 },
                 currency: 'NGN',
-            
+
                 onClose: function(){
                 alert('Window closed.');
                 },

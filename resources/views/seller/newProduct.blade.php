@@ -9,9 +9,9 @@
   <div id="product_content" class="bg-white">
       <div class="container">
       <form action="{{route('product.create')}}" id="form" method="post" enctype="multipart/form-data">
-              @csrf 
+              @csrf
               <div class="row p-4">
-                  
+
                   <div class="col-md-7 order-lg-0 order-1">
                         <div class="form-group">
                           <label for="product_section">Product Section</label>
@@ -20,7 +20,7 @@
                             <option value="regular">Regular Product</option>
                             <option value="featured">Featured Product</option>
                             <option value="hotlist">Hotlist Product</option>
-                            
+
                           </select>
                         </div>
                     <div class="form-group">
@@ -34,7 +34,7 @@
                               <select class="form-control pb-1" name="category" id="category">
                                 <option value="">Select category...</option>
                                 @foreach ($categories as $category)
-                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                <option value="{{$category->slug}}">{{$category->name}}</option>
                                 @endforeach
                               </select>
                             </div>
@@ -53,7 +53,6 @@
                                 <label for="">Brand</label>
                                 <select class="form-control pb-1" name="brand" id="brand" required>
                                   <option value="">Select Brand...</option>
-
                                 </select>
                               </div>
                         </div>
@@ -204,23 +203,23 @@
             });
 
             $('#category').on('change', function(){
-                var id = $(this).val();
+                var slug = $(this).val();
                 $.ajax({
                     method: 'get',
                     url:"{{route('getSubCategoryBrand')}}",
-                    data:{id:id},
+                    data:{slug:slug},
                     success: function(data){
                         console.log(data.sub);
 
 
                         $('#subcategory').html('<option value="">Select subcategory...</option>');
                             $.each(data.sub, function(key, value){
-                            $('#subcategory').append('<option value = '+value.id+ '>'+value.name+'</option>');
+                            $('#subcategory').append('<option value = '+value.slug+ '>'+value.name+'</option>');
                         });
 
                         $('#brand').html('<option value="">Select brand...</option>');
                             $.each(data.brand, function(key, value){
-                            $('#brand').append('<option value = '+value.id+ '>'+value.name+'</option>');
+                            $('#brand').append('<option value = '+value.slug+ '>'+value.name+'</option>');
                         });
                     }
                 });
@@ -241,7 +240,7 @@
                 var image = $('#image').val();
 
                 if(name == ''){
-                    toastr.error("Product name is required"); 
+                    toastr.error("Product name is required");
                 }
                 else if(category == ''){
                     toastr.error("Category is required");
@@ -283,14 +282,14 @@
                         $('#form').submit();
                     }
                 }
-                    
+
             });
         });
 
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-                
+
                 reader.onload = function (e) {
                     $('#blah')
                         .attr('src', e.target.result);

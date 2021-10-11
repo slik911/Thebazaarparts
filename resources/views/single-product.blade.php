@@ -167,7 +167,12 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md-3 col-11 mx-auto mt-md-5 ml-3" style="">
+                                    @if ($product->company_logo)
                                     <center><img src="{{asset('images/company_logo/'.$product->company_logo)}}" class="img-fluid " style="width:150px; height:150px; object-fit:contain;  margin-top:-30px;" alt=""></center>
+                                    @else
+                                    <center><img src="{{asset('images/b2plogo.png')}}" class="img-fluid " style="width:150px; height:150px; object-fit:contain;  margin-top:-30px; border:1px solid #ccc" alt=""></center>
+                                    @endif
+
                                     </div>
                                     <div class="col-md-8 col-12 mt-md-4">
                                     <a href="{{route('parts.company_profile', ['slug'=>$product->company_slug])}}" style="color:#575962; text-decoration:none"><h5 style="font-weight: 600; text-transform:uppercase" class="mb-3 mt-md-0 mt-4 text-md-left text-center ">{{$product->company_name}} </h5></a>

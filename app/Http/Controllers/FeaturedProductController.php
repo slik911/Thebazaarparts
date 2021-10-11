@@ -22,10 +22,10 @@ class FeaturedProductController extends Controller
 {
     public function manage(){
         $products = DB::table('featured_products')->where('user_id', auth::user()->id)->latest()->cursor();
-        $products_id = DB::table('products')->where('status', true)->where('rejected', false)->where('expired', false)->where('deleted', false)->pluck('product_id');    
+        $products_id = DB::table('products')->where('status', true)->where('rejected', false)->where('expired', false)->where('deleted', false)->pluck('product_id');
         $new = new NotificationModel;
         $slot_data = $new->productNotification();
-  
+
         return view('seller.manageFeaturedProducts', compact('products', 'products_id', 'slot_data'));
     }
 
@@ -38,7 +38,7 @@ class FeaturedProductController extends Controller
                     $status = DB::table('company_profiles')->where('user_id', auth::user()->id)->value('verified');
                     if($status == true){
                         if($count->total_slot_remaining > 0){
-                           
+
                             $product = DB::table('products')->where('product_id', $request->product_id)->first();
                             if(DB::table('featured_products')->where('product_id', $request->product_id)->exists()){
                                 $request->session()->flash('error', 'Products has already been uploaded, please check and try again');
@@ -50,14 +50,14 @@ class FeaturedProductController extends Controller
                                 $new->user_id = Auth::user()->id;
                                 $new->product_id = $product->product_id;
                                 $new->name = $product->name;
-                                $new->price = $product->price; 
+                                $new->price = $product->price;
                                 $oldpath = 'images/products/'.$product->image;
                                 $fileExtension = File::extension($oldpath);
                                 $newName = 'featured'.time().'.'.$fileExtension;
                                 $newPathWithName = 'images/products/'.$newName;
                                 File::copy($oldpath, $newPathWithName);
 
-                                $new->image = $newName;  
+                                $new->image = $newName;
                                 $new->category_id = $product->category_id;
                                 $new->subcategory_id = $product->subcategory_id;
                                 $new->brand = $product->brand;
@@ -80,7 +80,7 @@ class FeaturedProductController extends Controller
                                         $newCount->completed = true;
                                     }
                                     $newCount->save();
-    
+
                                     $request->session()->flash('success', 'Product added to Featured list');
                                     return redirect()->route('product.manage');
                                 }
@@ -88,11 +88,11 @@ class FeaturedProductController extends Controller
                                     $request->session()->flash('error', 'Sorry an error just occurred, please try again later.');
                                     return redirect()->back();
                                 }
-                            }    
+                            }
                         }
                         else{
                             $request->session()->flash('error', 'You have exhausted your product slot.');
-                            return redirect()->back();  
+                            return redirect()->back();
                         }
                     }
                     else{
@@ -104,7 +104,7 @@ class FeaturedProductController extends Controller
             $request->session()->flash('error', 'Please kindly purchase a featured slot before uploading a new product');
             return redirect()->back();
         }
-        
+
     }
 
 
@@ -126,7 +126,7 @@ class FeaturedProductController extends Controller
         DB::table('featured_products')->where('product_id', $request->id)->delete();
         $request->session()->flash('success', 'Product deleted successfully');
         return redirect()->back();
-        
+
     }
 
     public function updateAvailability(Request $request){
@@ -135,7 +135,7 @@ class FeaturedProductController extends Controller
         $product->save();
 
         if($product->availability == true){
-            $request->session()->flash('success', 'Product availability changed to In stock');   
+            $request->session()->flash('success', 'Product availability changed to In stock');
         }
         else{
             $request->session()->flash('success', 'Product availability changed to out of stock');
@@ -146,16 +146,16 @@ class FeaturedProductController extends Controller
     public function getProductDetails($slug){
         $product = DB::table('featured_products')
                    ->select('featured_products.*', 'categories.name as category_name', 'subcategories.name as subcategory_name', 'brands.name as brand_name', 'states.name as state_name', 'countries.name as country_name')
-                   ->leftjoin('categories', 'categories.id', '=', 'featured_products.category_id')
-                   ->leftjoin('subcategories', 'subcategories.id', '=', 'featured_products.subcategory_id')
-                   ->leftjoin('brands', 'brands.id', '=', 'featured_products.brand')
+                   ->leftjoin('categories', 'categories.slug', '=', 'featured_products.category_id')
+                   ->leftjoin('subcategories', 'subcategories.slug', '=', 'featured_products.subcategory_id')
+                   ->leftjoin('brands', 'brands.slug', '=', 'featured_products.brand')
                    ->leftjoin('countries', 'countries.id', '=', 'featured_products.country_id')
                    ->leftJoin('states', 'states.id', '=', 'featured_products.state_id')
                    ->where('featured_products.slug', '=', $slug)->first();
 
                    $new = new NotificationModel;
                    $data = $new->notifiable();
-                   $slot_data = $new->productNotification();  
+                   $slot_data = $new->productNotification();
                    return view('admin.productDetails', compact('product', 'data', 'slot_data'));
     }
 
@@ -163,11 +163,11 @@ class FeaturedProductController extends Controller
         $product = DB::table('featured_products')->where('slug', $slug)->first();
         $countries = Country::cursor();
         $categories = Category::where('deleted', false)->cursor();
-        $subcategories = Subcategory::where('deleted', false)->cursor();
+        $subcategories = Subcategory::where('category_id', $product->category_id)->where('deleted', false)->cursor();
         $states = State::cursor();
-        $brands = Brand::where('deleted', false)->cursor();
+        $brands = Brand::where('category_id', $product->category_id)->where('deleted', false)->cursor();
         $new = new NotificationModel;
-        $slot_data = $new->productNotification();  
+        $slot_data = $new->productNotification();
         return view('seller.editFeaturedProduct', compact('product', 'countries',  'categories', 'brands', 'states', 'subcategories', 'slot_data'));
     }
 
@@ -201,14 +201,14 @@ class FeaturedProductController extends Controller
 
         $product = DB::table('featured_products')->where('id', $request->id)->first();
 
-        if($request->image){         
+        if($request->image){
                 File::delete('images/products/'.$product->image);
                 $image = $request->file('image');
                 $filename = time() . '.' . $image->getClientOriginalExtension();
                 $location = public_path('images/products/'. $filename);
                 Image::make($image)->save($location);
                 DB::table('featured_products')->where('id', $request->id)->update(["image"=>$filename]);
-            
+
         }
 
         $request->session()->flash('success', 'Product updated successfully.');
@@ -219,7 +219,7 @@ class FeaturedProductController extends Controller
     public function productManager(){
         if(Auth::check()){
             $new = new NotificationModel;
-            $data = $new->notifiable(); 
+            $data = $new->notifiable();
 
             $products = DB::table('featured_products')
                 ->select('featured_products.*','company_profiles.name as company_name')
@@ -242,8 +242,8 @@ class FeaturedProductController extends Controller
                            ->select('featured_products.product_id as product_id', 'featured_products.slug as slug', 'users.email as email')
                            ->leftJoin('users', 'users.id', '=', 'featured_products.user_id')
                            ->where('featured_products.id', $request->id)->first();
-        
-        
+
+
         $details = [
             'title'=>'Product Approval Notification',
             'url' => route('product.viewFeaturedDetails', ['slug'=>$product_details->slug]),

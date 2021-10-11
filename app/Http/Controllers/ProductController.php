@@ -24,20 +24,20 @@ use App\NotificationModel;
 class ProductController extends Controller
 {
 
-    public function random_strings($length_of_string) 
-    { 
-      
-        $str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'; 
-        return substr(str_shuffle($str_result),  
-                           0, $length_of_string); 
-    } 
+    public function random_strings($length_of_string)
+    {
+
+        $str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        return substr(str_shuffle($str_result),
+                           0, $length_of_string);
+    }
 
     public function index(){
         if(Auth::check()){
             $countries = Country::cursor();
         $categories = Category::cursor();
         $new = new NotificationModel;
-        $slot_data = $new->productNotification(); 
+        $slot_data = $new->productNotification();
         return view('seller.newProduct', compact('countries', 'categories', 'slot_data'));
         }
         else{
@@ -46,8 +46,8 @@ class ProductController extends Controller
     }
 
         public function getdata(Request $request){
-            $sub = DB::table('subcategories')->where('category_id', $request->id)->get();
-            $brand = DB::table('brands')->where('category_id', $request->id)->get();
+            $sub = DB::table('subcategories')->where('category_id', $request->slug)->get();
+            $brand = DB::table('brands')->where('category_id', $request->slug)->get();
 
             $data = ["sub"=>$sub, "brand"=>$brand];
             return response()->json($data);
@@ -55,13 +55,14 @@ class ProductController extends Controller
         }
 
         public function create(Request $request){
+
             if($request->product_section == 'regular'){
                 $count = DB::table('product_slot_managers')->where('user_id', Auth::user()->id)->where('package', 'Regular')->where('completed', false)->where('expired', false)->first();
 
                 $status = DB::table('company_profiles')->where('user_id', auth::user()->id)->value('verified');
                 if($count == null){
                     $request->session()->flash('error', 'Please purchase an economic package before uploading an item');
-                    return Redirect::back()->withInput();  
+                    return Redirect::back()->withInput();
                 }
                 else{
                     if($status == true){
@@ -73,7 +74,6 @@ class ProductController extends Controller
                             $new->name = $request->name;
                             $new->price = $request->price;
                                 if($request->image){
-                        
                                 $image = $request->file('image');
                                 $filename = time() . '.' . 'jpg';
                                 $location = public_path('images/products/'. $filename);
@@ -94,7 +94,7 @@ class ProductController extends Controller
                             $new->expiry_date = $count->end_time;
                             $new->part_no = $request->part_no;
                             $new->save();
-            
+
                             if($new){
                                 $newCount = ProductSlotManager::where('slot_id', $count->slot_id)->first();
                                 $newCount->total_slot_remaining =  $newCount->total_slot_remaining - 1;
@@ -102,7 +102,7 @@ class ProductController extends Controller
                                     $newCount->completed = true;
                                 }
                                 $newCount->save();
-            
+
                                 $request->session()->flash('success', 'Product has been uploaded successfully kindly wait while its been approved by the admin');
                                 return redirect()->route('product.manage');
                             }
@@ -110,12 +110,12 @@ class ProductController extends Controller
                                 $request->session()->flash('error', 'Sorry an error just occurred, please try again later.');
                                 return redirect()->back();
                             }
-            
-                            
+
+
                         }
                         else{
                             $request->session()->flash('error', 'You have exhausted your product slot.');
-                            return Redirect::back()->withInput();  
+                            return Redirect::back()->withInput();
                         }
                     }
                     else{
@@ -176,7 +176,7 @@ class ProductController extends Controller
                                         return Redirect::back()->withInput();
                                     }
 
-                                    
+
                                 }
                                 else{
                                     $request->session()->flash('error', 'You have exhausted your product slot.');
@@ -197,7 +197,7 @@ class ProductController extends Controller
                 $count = DB::table('product_slot_managers')->where('user_id', Auth::user()->id)->where('package', 'Hotlist')->where('completed', false)->where('expired', false)->first();
 
                 if($count){
-        
+
                             $status = DB::table('company_profiles')->where('user_id', auth::user()->id)->value('verified');
                             if($status == true){
                                 if($count->total_slot_remaining > 0){
@@ -228,7 +228,7 @@ class ProductController extends Controller
                                     $new->expiry_date = $count->end_time;
                                     $new->part_no = $request->part_no;
                                     $new->save();
-        
+
                                     if($new){
                                         $newCount = ProductSlotManager::where('slot_id', $count->slot_id)->first();
                                         $newCount->total_slot_remaining =  $newCount->total_slot_remaining - 1;
@@ -236,7 +236,7 @@ class ProductController extends Controller
                                             $newCount->completed = true;
                                         }
                                         $newCount->save();
-        
+
                                         $request->session()->flash('success', 'Product has been uploaded successfully kindly wait while its been approved by the admin');
                                         return redirect()->route('hotlist_product.manage');
                                     }
@@ -244,12 +244,12 @@ class ProductController extends Controller
                                         $request->session()->flash('error', 'Sorry an error just occurred, please try again later.');
                                         return Redirect::back()->withInput();
                                     }
-        
-                                    
+
+
                                 }
                                 else{
                                     $request->session()->flash('error', 'You have exhausted your Hotlist slot.');
-                                    return Redirect::back()->withInput();  
+                                    return Redirect::back()->withInput();
                                 }
                             }
                             else{
@@ -270,11 +270,11 @@ class ProductController extends Controller
             $products = DB::table('products')
                             ->select('products.*', 'hotlist_products.product_id as hotlist', 'featured_products.product_id as featured')
                             ->leftjoin('featured_products', 'featured_products.product_id', '=', 'products.product_id')
-                            ->leftjoin('hotlist_products', 'hotlist_products.product_id', '=', 'products.product_id')    
-                            ->where('products.user_id', auth::user()->id)->latest()->where('products.section', 'product')->cursor();   
+                            ->leftjoin('hotlist_products', 'hotlist_products.product_id', '=', 'products.product_id')
+                            ->where('products.user_id', auth::user()->id)->latest()->where('products.section', 'product')->cursor();
 
             $new = new NotificationModel;
-            $slot_data = $new->productNotification();          
+            $slot_data = $new->productNotification();
             return view('seller.manageProducts', compact('products', 'slot_data'));
         }
 
@@ -282,16 +282,16 @@ class ProductController extends Controller
             $products =  DB::table('products')
                         ->where('products.id', '=', $request->id)
                         ->first();
- 
+
             return response()->json($products);
         }
 
-        
+
         public function getCountry(Request $request){
             $state =  DB::table('states')
                         ->where('id', '=', $request->id)
                         ->first();
- 
+
             return response()->json($state);
         }
 
@@ -299,11 +299,11 @@ class ProductController extends Controller
             $product = DB::table('products')->where('slug', $slug)->first();
             $countries = Country::cursor();
             $categories = Category::where('deleted', false)->cursor();
-            $subcategories = Subcategory::where('deleted', false)->cursor();
+            $subcategories = Subcategory::where('category_id', $product->category_id)->where('deleted', false)->cursor();
             $states = State::cursor();
-            $brands = Brand::where('deleted', false)->cursor();
+            $brands = Brand::where('category_id', $product->category_id)->where('deleted', false)->cursor();
             $new = new NotificationModel;
-            $slot_data = $new->productNotification(); 
+            $slot_data = $new->productNotification();
             return view('seller.editProduct', compact('product', 'countries',  'categories', 'brands', 'states', 'subcategories', 'slot_data'));
         }
 
@@ -329,15 +329,15 @@ class ProductController extends Controller
             $product = DB::table('products')->where('id', $request->id)->first();
 
             if($request->image){
-    
-               
+
+
                     File::delete('images/products/'.$product->image);
                     $image = $request->file('image');
                     $filename = (new ProductController)->random_strings(10).Auth::user()->id . '.' . $image->getClientOriginalExtension();
                     $location = public_path('images/products/'. $filename);
                     Image::make($image)->save($location);
                     DB::table('products')->where('id', $request->id)->update(["image"=>$filename]);
-               
+
             }
 
             $request->session()->flash('success', 'Product updated successfully.');
@@ -351,7 +351,7 @@ class ProductController extends Controller
             $product->save();
 
             if($product->availability == true){
-                $request->session()->flash('success', 'Product availability changed to In stock');   
+                $request->session()->flash('success', 'Product availability changed to In stock');
             }
             else{
                 $request->session()->flash('success', 'Product availability changed to out of stock');
@@ -362,7 +362,7 @@ class ProductController extends Controller
 
         public function deleteProduct(Request $request){
             $product = DB::table('products')->where('id', $request->id)->first();
-          
+
             File::delete('images/products/'.$product->image);
 
             DB::table('product_slot_managers')->where('slot_id', $product->slot_id)->increment('total_slot_remaining', 1);
@@ -370,7 +370,7 @@ class ProductController extends Controller
              DB::table('products')->where('id', $request->id)->delete();
             $request->session()->flash('success', 'Product deleted successfully');
             return redirect()->back();
-            
+
         }
 
         public function productManager(){
@@ -392,16 +392,16 @@ class ProductController extends Controller
         public function getProductDetails($slug){
             $product = DB::table('products')
                        ->select('products.*', 'categories.name as category_name', 'subcategories.name as subcategory_name', 'brands.name as brand_name', 'states.name as state_name', 'countries.name as country_name')
-                       ->leftjoin('categories', 'categories.id', '=', 'products.category_id')
-                       ->leftjoin('subcategories', 'subcategories.id', '=', 'products.subcategory_id')
-                       ->leftjoin('brands', 'brands.id', '=', 'products.brand')
+                       ->leftjoin('categories', 'categories.slug', '=', 'products.category_id')
+                       ->leftjoin('subcategories', 'subcategories.slug', '=', 'products.subcategory_id')
+                       ->leftjoin('brands', 'brands.slug', '=', 'products.brand')
                        ->leftjoin('countries', 'countries.id', '=', 'products.country_id')
                        ->leftJoin('states', 'states.id', '=', 'products.state_id')
                        ->where('products.slug', '=', $slug)->first();
 
                        $new = new NotificationModel;
                         $data = $new->notifiable();
-                        $slot_data = $new->productNotification(); 
+                        $slot_data = $new->productNotification();
                        return view('admin.productDetails', compact('product', 'data', 'slot_data'));
         }
 
@@ -415,8 +415,8 @@ class ProductController extends Controller
                                ->select('products.product_id as product_id', 'products.slug as slug', 'users.email as email')
                                ->leftJoin('users', 'users.id', '=', 'products.user_id')
                                ->where('products.id', $request->id)->first();
-            
-            
+
+
             $details = [
                 'title'=>'Product Approval Notification',
                 'url' => route('product.viewDetails', ['slug'=>$product_details->slug]),
@@ -454,5 +454,5 @@ class ProductController extends Controller
             $request->session()->flash('success', 'Product Rejected');
             return redirect()->back();
         }
-    
+
 }

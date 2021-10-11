@@ -55,12 +55,15 @@ class ApiController extends Controller
 
         $products = DB::table('products')
                         ->select('products.*', 'categories.name as category_name', 'subcategories.name as subcategory_name')
-                        ->leftjoin('categories', 'categories.id', '=', 'products.category_id')
-                        ->leftjoin('subcategories', 'subcategories.id', '=', 'products.subcategory_id')
+                        ->leftjoin('categories', 'categories.slug', '=', 'products.category_id')
+                        ->leftjoin('subcategories', 'subcategories.slug', '=', 'products.subcategory_id')
 
                         ->where(function ($x) use($search_values){
                             foreach($search_values as $value){
                                 $x->orWhere('products.name', 'like', '%'.$value.'%');
+                                $x->orWhere('products.category', 'like', '%'.$value.'%');
+                                $x->orWhere('products.brand', 'like', '%'.$value.'%');
+                                $x->orWhere('products.subcategory', 'like', '%'.$value.'%');
                             }
                         })
                         ->where('products.status', true)->where('products.rejected', false)->where('products.deleted', false)->paginate(16);

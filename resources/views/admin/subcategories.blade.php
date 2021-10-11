@@ -18,7 +18,7 @@ Subcategories
                         Add Row
                     </button>
                 </div>
-                
+
                 <!-- Modal -->
                 <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -27,7 +27,7 @@ Subcategories
                                 <h5 class="modal-title">
                                     <span class="fw-mediumbold">
                                     Sub Category</span>
-        
+
                                 </h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -45,7 +45,7 @@ Subcategories
                                                     <option value="">Select category</option>
                                                    @if ($categories)
                                                    @foreach ($categories as $category)
-                                                   <option value="{{$category->id}}">{{$category->name}}</option>
+                                                   <option value="{{$category->slug}}">{{$category->name}}</option>
                                                    @endforeach
                                                    @endif
                                                 </select>
@@ -64,7 +64,7 @@ Subcategories
                                             @enderror
                                         </div>
                                     </div>
-                               
+
                             </div>
                             <div class="modal-footer no-bd">
                                 <button type="submit"  class="btn btn-info btn-sm">Add</button>
@@ -75,7 +75,7 @@ Subcategories
                     </div>
                 </div>
                 </div>
-                
+
                 <!-- Table -->
                 <div class="table-responsive">
                     <table id="add-row" class="display nowrap table table-striped table-bordered table-hover" cellspacing="0" width="100%">
@@ -105,7 +105,7 @@ Subcategories
                                 {{\Carbon\Carbon::parse($subcategory->created_at)->format('d, M Y')}}
                             </td>
                             <td>
-                                {{$subcategory->category->name}}
+                                {{$subcategory->category_name}}
                             </td>
                             <td>
                                 {{$subcategory->name}}
@@ -122,7 +122,7 @@ Subcategories
                             <input type="hidden" name="id" value="{{$subcategory->id}}">
 
                         <button type="submit" class="btn btn-sm btn-danger " onclick="return confirm('sure you want to delete this ?')"><i class="fa fa-trash aria-hidden="true"></i> Delete</button>
-                            </form>    
+                            </form>
                             </td>
                         </tr>
                            @endforeach
@@ -147,7 +147,7 @@ Subcategories
                     </button>
                 </div>
                 <div class="modal-body">
-    
+
                     <form role="form" method="post" action="{{route('update.subcategory')}}" >
                             @csrf
                             @method('PUT')
@@ -160,7 +160,7 @@ Subcategories
                                                     <option value="">Select category</option>
                                                    @if ($categories)
                                                    @foreach ($categories as $category)
-                                                   <option value="{{$category->id}}">{{$category->name}}</option>
+                                                   <option value="{{$category->slug}}">{{$category->name}}</option>
                                                    @endforeach
                                                    @endif
                                                 </select>
@@ -179,8 +179,8 @@ Subcategories
                                 </div>
                             </div>
 
-                           
-                       
+
+
                     </div>
                     <div class="modal-footer no-bd">
                         <button type="submit"  class="btn btn-info btn-sm">Save Changes</button>
@@ -205,7 +205,7 @@ Subcategories
                     method: 'get',
                     url:"{{route('get.subcategory')}}",
                     data:{id:id},
-                    success: function(data){         
+                    success: function(data){
                     $('#eid').val(data.id);
                     $('#ecategory').val(data.category_id)
                     $('#category_name').val(data.name);
@@ -213,6 +213,6 @@ Subcategories
                 });
             });
         })
-       
+
     </script>
 @endsection

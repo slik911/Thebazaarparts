@@ -18,7 +18,7 @@ Brands
                         Add Row
                     </button>
                 </div>
-                
+
                 <!-- Modal -->
                 <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -27,7 +27,7 @@ Brands
                                 <h5 class="modal-title">
                                     <span class="fw-mediumbold">
                                     brand</span>
-        
+
                                 </h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -45,7 +45,7 @@ Brands
                                                     <option value="">Select category</option>
                                                    @if ($categories)
                                                    @foreach ($categories as $category)
-                                                   <option value="{{$category->id}}">{{$category->name}}</option>
+                                                   <option value="{{$category->slug}}">{{$category->name}}</option>
                                                    @endforeach
                                                    @endif
                                                 </select>
@@ -64,7 +64,7 @@ Brands
                                             @enderror
                                         </div>
                                     </div>
-                               
+
                             </div>
                             <div class="modal-footer no-bd">
                                 <button type="submit"  class="btn btn-info btn-sm">Add</button>
@@ -75,7 +75,7 @@ Brands
                     </div>
                 </div>
                 </div>
-                
+
                 <!-- Table -->
                 <div class="table-responsive">
                     <table id="add-row" class="display nowrap table table-bordered table-striped table-hover" cellspacing="0" width="100%">
@@ -103,7 +103,7 @@ Brands
                                 {{\Carbon\Carbon::parse($brand->created_at)->format('d, M Y')}}
                             </td>
                             <td>
-                                {{$brand->category->name}}
+                                {{$brand->category_name}}
                             </td>
                             <td>
                                 {{$brand->name}}
@@ -118,9 +118,9 @@ Brands
                             @csrf
                             @method('DELETE')
                             <input type="hidden" name="id" value="{{$brand->id}}">
-      
+
                         <button type="submit" class="btn btn-sm btn-danger " onclick="return confirm('sure you want to delete this ?')"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
-                            </form>    
+                            </form>
                             </td>
                         </tr>
                            @endforeach
@@ -145,7 +145,7 @@ Brands
                     </button>
                 </div>
                 <div class="modal-body">
-                    
+
                     <form role="form" method="post" action="{{route('update.brand')}}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -158,7 +158,7 @@ Brands
                                                     <option value="">Select category</option>
                                                    @if ($categories)
                                                    @foreach ($categories as $category)
-                                                   <option value="{{$category->id}}">{{$category->name}}</option>
+                                                   <option value="{{$category->slug}}">{{$category->name}}</option>
                                                    @endforeach
                                                    @endif
                                                 </select>
@@ -175,7 +175,7 @@ Brands
                                         </span>
                                     @enderror
                                 </div>
-                            </div>   
+                            </div>
                     </div>
                     <div class="modal-footer no-bd">
                         <button type="submit"  class="btn btn-info btn-sm">Save Changes</button>
@@ -189,7 +189,7 @@ Brands
 @section('js')
     <script>
          $(document).ready(function () {
-             
+
             $('#add-row').DataTable({
                 "bSort":false
             });
@@ -200,7 +200,7 @@ Brands
                     method: 'get',
                     url:"{{route('get.brand')}}",
                     data:{id:id},
-                    success: function(data){         
+                    success: function(data){
                     $('#eid').val(data.id);
                     $('#ecategory').val(data.category_id)
                     $('#brand_name').val(data.name);
@@ -208,6 +208,6 @@ Brands
                 });
             });
         })
-       
+
     </script>
 @endsection

@@ -20,39 +20,42 @@
                         <div class="col-md-11">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <center>
-                                        <img src="{{asset('images/company_logo/'.$profile->logo)}}" class="img-fluid" alt="" style="width: 120px; height:120px; object-fit:contain;">
-                                    </center>
+                                    @if ($profile->logo)
+                                    <center><img src="{{asset('images/company_logo/'.$profile->logo)}}" class="img-fluid " style="width: 120px; height:120px; object-fit:contain;" alt=""></center>
+                                    @else
+                                    <center><img src="{{asset('images/b2plogo.png')}}" class="img-fluid " style="width: 120px; height:120px; object-fit:contain; border:1px solid #ccc" alt=""></center>
+                                    @endif
+
                                 </div>
                                 <div class="col-md-9">
                                 <h2 style="font-weight:500; text-transform:uppercase; " id="profile_name" class="text-secondary text-md-left text-center">{{$profile->name}}</h2>
 
                                 <div class="social-link text-md-left text-center">
                                     <ul class="list-unstyled list-inline">
-                                    
+
                                         <li class="list-inline-item" data-toggle="tooltip" data-placement="top" title="Send us a message"><a href="mailto:{{$profile->email}}" ><i class="fa fa-envelope" style="background-color:#3d1c65"></i></a></li>
                                         <li class="list-inline-item"><a href="https://api.whatsapp.com/send?phone={{ltrim($profile->phone, '+')}}" data-toggle="tooltip" data-placement="top" title="Chat with us" target="blank"><i class="fa fa-whatsapp text-white bg-success"></i></a></li>
                                         @if ($profile->website)
-                                    <li class="list-inline-item" data-toggle="tooltip" data-placement="top" title="Visit our website"><a href="{{$profile->website}}" ><i class="fa fa-globe bg-info " style="background-color:#3d1c65"></i></a></li> 
+                                    <li class="list-inline-item" data-toggle="tooltip" data-placement="top" title="Visit our website"><a href="{{$profile->website}}" ><i class="fa fa-globe bg-info " style="background-color:#3d1c65"></i></a></li>
                                         @endif
                                     </ul>
                                 </div>
-                                
-                    
+
+
                                 </div>
                             </div>
                         </div>
-                        
+
                        </div>
                     </div>
-       
+
             </div>
              </div>
          </div>
         </div>
 
         <div class="container-fluid ">
-            
+
             <div class="row p-md-5 p-3" style="background-color:#54268c">
                 <div class="col-md-12">
 
@@ -69,14 +72,14 @@
                     <div class="row ">
                         <div class="col-md-6">
                             <table class="table table-striped nowrap table-bordered table-responsive-sm" width="100%" style="font-size:13px;">
-                                
+
                                     <thead>
                                         <th><b style="color: #3d1c65; font-weight:601;;">Profile Information</b></th>
                                     <th></th>
                                     </thead>
-            
+
                                     <tbody>
-                                       
+
                                         <tr>
                                             <th scope="row">Member Since</th>
                                             <td>{{Carbon\carbon::parse($profile->created_at)->format('d, M Y')}}</td>
@@ -94,14 +97,14 @@
                         </div>
                         <div class="col-md-6">
                             <table class="table table-striped table-inverse table-bordered " width="100%" style="font-size:13px;">
-                                
+
                                     <thead>
                                         <th><b style="color: #3d1c65; font-weight:601;">Contact Details</b></th>
                                     <th></th>
                                     </thead>
-            
+
                                     <tbody>
-                                       
+
                                         <tr>
                                             <th scope="row">Email</th>
                                             <td><a href="mailto:{{$profile->email}}"  style="color:#333">{{$profile->email}}</a></td>
@@ -132,17 +135,17 @@
                 <div class="col-12">
                     <h6 style="font-weight:501" class="mb-4 mt-4 text-white">COMPANY PRODUCTS</h6>
                 </div>
-               
+
                 @if ($products->isEmpty())
                 <div class="col-12">
-                 <h2 class="text-center mt-5">No Item(s) Available!</h2>
+                 <h4 class=" mt-3 mb-3 text-white">No Item(s) Available!</h4>
                 </div>
              @else
              @foreach ($products as $product)
              <div class="col-md-2 col-6 mb-4">
                 <div class="card shadow-sm" style="border:none">
                         <a href="{{route('parts.single-product', ['slug'=>$product->slug])}}">
-                            <img class="card-img-top img-fluid pt-2" src="{{asset('images/products/'.$product->image)}}" style="width:100%; height:100px; object-fit:contain; border-radius:0px"  alt="">
+                            <img class="card-img-top img-fluid pt-2" src="{{asset('images/products/'.$product->image)}}" style="width:100%; height:100px; object-fit:contain; padding:5px; border-radius:0px"  alt="">
                         </a>
                     <div class="card-body">
                         <h6 class="card-title" style="font-size:14px; line-height:3px;"><a href="{{route('parts.single-product', ['slug'=>$product->slug])}}" style="text-decoration:none; color:#54268c">
@@ -160,13 +163,13 @@
              <div class="col-12">
                 <a href="{{route('company.products', ['company_slug'=> $profile->slug])}}" class="float-right text-white" style="font-size:15px; color:#3d1c65">View All Company products >></a>
                </div>
-       
+
              @endif
 
-             
-            
+
+
             </div>
-            
+
        </div>
        </div>
 
@@ -194,8 +197,8 @@
                             </center>
                             </div>
                             @endif
-                       
-                   
+
+
                             @if ($membership->silver == true)
                             <div class="col-md-3 col-6 mx-auto ">
                             <center>
@@ -211,8 +214,8 @@
                                 </center>
                                 </div>
                             @endif
-                       
-                       
+
+
                             @if ($membership->gold == true)
                             <div class="col-md-3 col-6 mx-auto">
                             <center>
@@ -228,8 +231,8 @@
                                 </center>
                                 </div>
                             @endif
-                        
-                        
+
+
                             @if ($membership->platinum == true)
                             <div class="col-md-3 col-6 mx-auto ">
                             <center>

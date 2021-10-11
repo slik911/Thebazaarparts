@@ -31,7 +31,7 @@ class Subcategory extends Model
         return $this->hasMany('App\Prouct');
     }
     public function getSubCategory($category){
-        $subcategorys = DB::table('subcategories')->where('category_id', $category->id)->where('deleted', false)->cursor();
+        $subcategorys = DB::table('subcategories')->where('category_id', $category->slug)->where('deleted', false)->cursor();
         $subcategori = [];
 
         foreach ($subcategorys as $sub) {
@@ -39,15 +39,15 @@ class Subcategory extends Model
             $row["id"] = $sub->id;
             $row["name"] = $sub->name;
             $row["slug"] = $sub->slug;
-            $row["count"] = DB::table('products')->where('subcategory_id', $sub->id)->where('category_id', $category->id)->where('status', true)->count();
+            $row["count"] = DB::table('products')->where('subcategory_id', $sub->slug)->where('category_id', $category->slug)->where('status', true)->count();
             $subcategori[] = $row;
         }
 
-     
+
        $subcategory = json_decode(json_encode($subcategori));
 
         return $subcategory;
     }
 
-    
+
 }

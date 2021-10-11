@@ -14,9 +14,9 @@ use App\User;
 class SellerController extends Controller
 {
     public function updateSellerProfile(Request $request){
-         
+
         if(DB::table('company_profiles')->where('user_id', auth::user()->id)->exists()){
-            
+
             $prof = DB::table('company_profiles')->where('user_id', auth::user()->id)->first();
 
                     if($request->image){
@@ -26,11 +26,11 @@ class SellerController extends Controller
                             'image'=>'required|mimes:jpeg,bmp,jpg,png|between:1, 6000',
                         ]);
                         $image = $request->file('image');
-            
+
                         $filename = time() . '.' . 'jpg';
-            
+
                         $location = public_path('images/company_logo/'. $filename);
-            
+
                         Image::make($image->getRealPath())->resize(200, 200, function($constraint){
                             $constraint->aspectRatio();
                             $constraint->upsize();
@@ -54,10 +54,10 @@ class SellerController extends Controller
                     "completed" => true,
                 ]);
 
-              
+
             }
             else if($prof->name != $request->name && $prof->email == $request->email){
-               
+
                 DB::table('company_profiles')->where('user_id', auth::user()->id)->update([
                     "name" => $request->name,
                     "phone" => $request->phone,
@@ -68,7 +68,7 @@ class SellerController extends Controller
                     "status"=> true,
                     "verified" => false,
                     "completed" => true,
-               
+
                 ]);
 
                 $slug = CompanyProfile::where('user_id', auth::user()->id)->first();
@@ -87,7 +87,7 @@ class SellerController extends Controller
                         "verified" => false,
                         "completed" => true,
                     ]);
-                    
+
              }
 
              else{
@@ -100,7 +100,7 @@ class SellerController extends Controller
                     return redirect()->back();
                 }
                 else{
-                 
+
                     DB::table('company_profiles')->where('user_id', auth::user()->id)->update([
                         "name" => $request->name,
                         "email" => $request->email,
@@ -124,7 +124,7 @@ class SellerController extends Controller
                 }
             }
 
-            
+
 
             $request->session()->flash('success', 'Profile updated successfully');
             return redirect()->back();
@@ -137,18 +137,18 @@ class SellerController extends Controller
                     'image'=>'required|mimes:jpeg,bmp,jpg,png|between:1, 6000',
                 ]);
                 $image = $request->file('image');
-    
+
                 $filename = time() . '.' . 'jpg';
-    
+
                 $location = public_path('images/company_logo/'. $filename);
-    
+
                 Image::make($image->getRealPath())->resize(200, 200, function($constraint){
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })->encode('jpg', 0)->save($location);
-    
+
             }
-    
+
             $profile = new CompanyProfile;
             $profile->user_id = auth::user()->id;
             $profile->name = $request->name;
@@ -158,7 +158,9 @@ class SellerController extends Controller
             $profile->address = $request->address;
             $profile->business_type = $request->business_type;
             $profile->website = $request->website;
+           if($request->image){
             $profile->logo = $filename;
+           }
             $profile->status = true;
             $profile->completed = true;
 
@@ -200,7 +202,7 @@ class SellerController extends Controller
                 })->encode('jpg', 0)->save($location);
                 $profile->logo = $filename;
             }
-           
+
             $profile->save();
 
             $user = User::findorfail(auth::user()->id);
@@ -223,5 +225,5 @@ class SellerController extends Controller
             }
         }
     }
-       
+
 }
