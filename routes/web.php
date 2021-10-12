@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', 'IndexController@index')->name('parts');
 Route::get('/countries/get-state', 'IndexController@getState')->name('getstate');
 Route::get('/categories/{category}', 'IndexController@categories')->name('categories');
+Route::get('/categories', 'IndexController@categorieslist')->name('categories.list');
 Route::get('/products/{category}/{subcategory_slug?}', 'IndexController@product')->name('products');
 Route::get('/products/{category}/brand/{brand_slug}', 'IndexController@productsBrand')->name('products.brand');
 Route::get('/company/products/{company_slug}', 'IndexController@CompanyProduct')->name('company.products');

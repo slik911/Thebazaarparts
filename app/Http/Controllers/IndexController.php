@@ -34,6 +34,11 @@ class IndexController extends Controller
 
     }
 
+    public function categorieslist(){
+        $categories = Category::where('deleted', false)->cursor();
+        return view('categoriesList', compact('categories'));
+    }
+
     public function getState(Request $request){
         $states = State::where('country_id', $request->id)->cursor();
         return response()->json($states);

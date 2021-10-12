@@ -45,13 +45,13 @@
     input[type="tel"]:focus,
     input[type="color"]:focus,
     input[type="file"]:focus,
-    .uneditable-input:focus {   
+    .uneditable-input:focus {
     border-color: rgba(84,38,140, .7);
     box-shadow: 0 1px 1px rgba(84,38,140, 0.075) inset, 0 0 8px rgba(84,38,140, 0.6);
     outline: 0 none;
     }
 
-   
+
     #category:focus{
         border-color: rgba(84,38,140, .7);
     box-shadow: 0 1px 1px rgba(84,38,140, 0.075) inset, 0 0 8px rgba(84,38,140, 0.6);
@@ -72,7 +72,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavId">
                     <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                        <li class="nav-item"> 
+                        <li class="nav-item">
                             <a href="" class="nav-link pl-2" style="color:#fff; background:#54268c; border-radius:25px;">
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-globe" fill="currentColor" style="margin-top:-2px;" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4H2.255a7.025 7.025 0 0 1 3.072-2.472 6.7 6.7 0 0 0-.597.933c-.247.464-.462.98-.64 1.539zm-.582 3.5h-2.49c.062-.89.291-1.733.656-2.5H3.82a13.652 13.652 0 0 0-.312 2.5zM4.847 5H7.5v2.5H4.51A12.5 12.5 0 0 1 4.846 5zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5H7.5V11H4.847a12.5 12.5 0 0 1-.338-2.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12H7.5v2.923c-.67-.204-1.335-.82-1.887-1.855A7.97 7.97 0 0 1 5.145 12zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11H1.674a6.958 6.958 0 0 1-.656-2.5h2.49c.03.877.138 1.718.312 2.5zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12h2.355a7.967 7.967 0 0 1-.468 1.068c-.552 1.035-1.218 1.65-1.887 1.855V12zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5h-2.49A13.65 13.65 0 0 0 12.18 5h2.146c.365.767.594 1.61.656 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4H8.5V1.077c.67.204 1.335.82 1.887 1.855.173.324.33.682.468 1.068z"/>
@@ -81,7 +81,7 @@
                                   Visit Bazaar Community
                             </a>
                         </li>
-                   
+
                         @if (Auth::check())
                         @if ( Auth::user()->role == 'seller' || Auth::user()->role == 'admin' )
 
@@ -109,8 +109,10 @@
                         @endif
                         @endif
 
-                        <li class="nav-item dropdown d-block d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+
+                        <li class="nav-item  d-block d-sm-none">
+                            <a href="{{route('categories.list')}}" class="nav-link d-block d-sm-none">
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-card-list" fill="currentColor" style="margin-top:-3px;" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
                                     <path fill-rule="evenodd" d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5z"/>
@@ -118,13 +120,9 @@
                                     <circle cx="3.5" cy="8" r=".5"/>
                                     <circle cx="3.5" cy="10.5" r=".5"/>
                                   </svg>
-                                Categories</a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownId">
-                                @foreach ($categories as $category)
-                            <a class="dropdown-item" style="font-size: 14px; text-transform:capitalize" href="{{route('products', ["category"=>$category->name, "subcategory_slug"=>null])}}">{{$category->name}}</a>
-                                @endforeach
-                            </div>
-                        </li>
+                                    Categories
+                                </a>
+                            </li>
 
 
                         @guest
@@ -138,7 +136,7 @@
                                 <a class="dropdown-item" style="font-size: 14px;" href="{{route('login')}}">Login</a>
                                 <a class="dropdown-item" style="font-size:14px;" href="{{route('register')}}">Register</a>
                             </div>
-                        </li>    
+                        </li>
                         @else
                         <li class="nav-item dropdown order-lg-2">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-transform: capitalize">
@@ -186,25 +184,25 @@
                   <h5 style="font-size:16px; font-weight:501; color:#fff" class="mb-4">CONTACT INFO</h5>
                   <p style="font-size:15px; color:#ddd; font-weight:400"><i class="fa fa-map-marker" aria-hidden="true"></i> Address:</p>
                   <p style="font-size:14px; color:#ddd; margin-top:-15px;  font-weight:400">Plot 16 House 1 Oduguwa Ogunsanya Green Estate Amuwo Odofin Lagos.a</p>
-  
+
                   <p style="font-size:15px; color:#ddd;  font-weight:400"><i class="fa fa-envelope" aria-hidden="true"></i> Email:</p>
                   <p style="font-size:14px; color:#ddd; margin-top:-15px;"  font-weight:400>enquiry@bazaarplus.com</p>
-  
+
                   <p style="font-size:15px; color:#ddd;  font-weight:400"><i class="fa fa-phone" aria-hidden="true"></i> Phone:</p>
                   <p style="font-size:14px; color:#ddd;  font-weight:400; margin-top:-15px;">+234 806 3815290</p>
                   <p style="font-size:14px; color:#ddd; margin-top:-15px;  font-weight:400">+234 810 7215634</p>
-                  
-                  
+
+
                 </div>
-                
+
               <div class="col-md-3 mt-md-0 mt-4">
-               
+
                       <h5 style="font-size:16px; font-weight:501; color:#fff" class="mb-4">QUICK LINKS</h5>
               <p><a href="{{route('about')}}" style="font-size:15px;  font-weight:400; color:#ddd; text-decoration:none; margin:0px 0px 15px;"><i class="fa fa-angle-right " aria-hidden="true"></i> About</a></p>
                     <p><a href="{{route('registered.sellers')}}" style="font-size:15px;  font-weight:400; color:#ddd; text-decoration:none; margin:0px 0px 15px;"><i class="fa fa-angle-right " aria-hidden="true"></i> Sellers</a></p>
                       <p><a href="{{route('terms')}}" style="font-size:15px;  font-weight:400; color:#ddd; text-decoration:none; margin:0px 0px 15px;"><i class="fa fa-angle-right " aria-hidden="true"></i> Terms and Condition</a></p>
                       <p><a href="{{route('terms')}}" style="font-size:15px;  font-weight:400; color:#ddd; text-decoration:none; margin:0px 0px 15px;"><i class="fa fa-angle-right " aria-hidden="true"></i> Privacy Policy</a></p>
-                  
+
               </div>
               <div class="col-md-3 mt-md-0 mt-4">
                   <h5 style="font-size:16px; font-weight:501; color:#fff" class="mb-4">SUPPORT</h5>
@@ -218,9 +216,9 @@
                           <label for="newsletter" class="text-white">Subscribe for NewsLetter</label>
                         <input type="text" class="form-control" style="width:100%" id="newsletter" placeholder="Search">
                       </div>
-   
+
                         <button type="submit" class="btn btn-warning btn-sm text-white " style="margin-left:15px;"><i class="fa fa-paper-plane" aria-hidden="true"></i> Subscribe</button>
-                 
+
                     </form>
                     <div class="f-social">
                       <ul class="list-unstyled list-inline">
