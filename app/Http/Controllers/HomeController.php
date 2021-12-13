@@ -153,6 +153,8 @@ class HomeController extends Controller
                     'address'=> $request->address,
                 ]
             ]);
+
+            
             $request->session()->flash('success', 'Profile updated successful');
             return redirect()->back();
         }

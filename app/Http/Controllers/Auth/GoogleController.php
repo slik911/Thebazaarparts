@@ -26,44 +26,43 @@ class GoogleController extends Controller
     public function handleGoogleCallback(Request $request)
     {
         $user = Socialite::driver('google')->stateless()->user();
+        if(DB::table('users')->where('google_id', null)->where('email', $user->email)->exists()){
+            $request->session()->flash('error', 'Account was registered via another mean, try to login directly');
+            return redirect()->route('login');
+        }
+        else{
+            // dd('ok');
+            try {
 
+                $user = Socialite::driver('google')->stateless()->user();
 
-        try {
+                $finduser = User::where('google_id', $user->id)->first();
 
-            $user = Socialite::driver('google')->stateless()->user();
+                if($finduser){
 
-            // dd($user);
-            // $finduser = User::where('google_id', $user->id)->first();
-            if(DB::table('user')->where('email', $user->email)->exists()){
-                $request->session()->flash('error', 'Email already exists, try logging in directly');
-                return redirect()->back();
-            }
-            else{
-                if(User::where('google_Id', $user->id)->exists()){
-                    $finduser = User::where('google_id', $user->id)->first();
                     Auth::login($finduser);
 
                     return redirect('/home');
-                }
-                else{
+
+                }else{
+
                     $new = new User;
                     $new->name = $user->name;
                     $new->email = $user->email;
                     $new->google_id = $user->id;
                     $new->email_verified_at = Carbon::now();
-                    $new->password = encrypt('123456dummy');
+                    $new->password = encrypt('Thebazaarparts@2021');
                     $new->save();
                     Auth::login($new);
 
                     return redirect('/home');
                 }
+
+            } catch (Exception $e) {
+                dd($e->getMessage());
             }
-
-
-        } catch (Exception $e) {
-            dd($e);
-            $request->session()->flash('error', 'sorry an error just occured! please try again later.');
-            return redirect()->back();
         }
+
     }
+ 
 }

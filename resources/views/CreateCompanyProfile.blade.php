@@ -21,7 +21,7 @@
                                 <p style="font-size:13px">Fill all fields to be able to sell on this platform</p>
                             </div>
                             <div class="col-md-8 order-lg-0 order-1">
-                                
+
                                 <div class="form-group mt-md-0 mt-3">
                                   <label for="">Company Name</label>
                                 <input type="text" name="name" id="name" class="form-control" value="" placeholder="" aria-describedby="helpId" required>
@@ -46,7 +46,7 @@
                                         <div class="form-group">
                                         <label for="">Email</label>
                                         <input type="email" name="email" id="email" class="form-control"  value=""  placeholder="" aria-describedby="helpId"  required>
-                                        </div> 
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -60,7 +60,7 @@
                                         <div class="form-group">
                                         <label for="">Website</label>
                                         <input type="text" name="website" id="website" class="form-control" value=""   placeholder="" aria-describedby="helpId">
-                                        </div> 
+                                        </div>
                                     </div>
 
                                     <div class="col-12">
@@ -72,9 +72,9 @@
                             </div>
                             <div class="col-md-4 mx-auto order-0">
                                 <center><div id="profile-pic" style="border:1px solid #ccc; width:200px; height:200px;">
-                                   
+
                                 <img id="blah"  src="http://placehold.it/400" alt="your image" style="width:200px; height:200px; object-fit:cover; object-position:center;"/>
-                              
+
                                 </div>
                                 <input type='file' name= "image" id="image" required onchange="readURL(this);" class="pl-4 mt-4" style="background:#" />
 
@@ -83,14 +83,14 @@
                                 @else
                                 <a href="#" class="btn btn-block btn-warning mt-3 disabled">Preview Profile</a>
                                 @endif --}}
-        
+
                             </center>
-        
-            
+
+
                             </div>
-                        
-        
-                           
+
+
+
                         </div>
                     </form>
 
@@ -117,7 +117,7 @@ $(document).ready(function() {
 		@if(Session::has('error'))
 		toastr.error("{{ Session::get('error') }}");
         @endif
-        
+
 
         $('#save').click(function(){
                 event.preventDefault();
@@ -136,7 +136,7 @@ $(document).ready(function() {
                 var pattern3 = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
                 if(name == ''){
-                    toastr.error("Company name is required"); 
+                    toastr.error("Company name is required");
                 }
                 else if(address == ''){
                     toastr.error("Address is required");
@@ -154,16 +154,16 @@ $(document).ready(function() {
                 else if(email == ''){
                     toastr.error("email is required");
                 }
-                
-               
+
+
                 else if(type == ''){
-                    toastr.error("Business_type  is required");
+                    toastr.error("Business type  is required");
                 }
 
                 else{
 
                     if(image != ''){
-                    
+
                         var file = $('#image')[0].files[0];
                         if(file.size > 2000000){
                              toastr.error("Maximum file size is 2mb");
@@ -181,17 +181,17 @@ $(document).ready(function() {
                                     // alert('submit');
                                     $('#form_details').submit();
                                 }
-                               
+
                                 }
                                 else{
                                     $('#form_details').submit();
                                     // alert('submit');
                                 }
                             }
-                          
+
                         }
-                    
-                        
+
+
                     }
                     else{
                             if(website != ''){
@@ -202,20 +202,20 @@ $(document).ready(function() {
                                         // alert('submit');
                                         $('#form_details').submit();
                                     }
-                                
+
                             }
                             else{
-                                // $('#form_details').submit();
-                                alert('submit');
+                                $('#form_details').submit();
+                                // alert('submit');
                             }
                         }
-                    
+
                 }
-                    
+
             });
 
 	});
-       
+
              function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -229,7 +229,7 @@ $(document).ready(function() {
             }
         }
 
-         
-    
+
+
     </script>
 @endsection
